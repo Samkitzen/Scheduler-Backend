@@ -8,10 +8,9 @@ const cellSchema = new Schema({
         type: Number,
         required: true
     },
-    subjectId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'subject',
-        required: true
+    subjectCode:{
+        type:String,
+        required:true,
     }
 })
 const CalenderSchema = new Schema({
@@ -23,9 +22,8 @@ const CalenderSchema = new Schema({
         type: Number,
         required: true
     },
-    branchId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'branch',
+    branchCode: {
+        type: String,
         required: true
     },
     timetable: {

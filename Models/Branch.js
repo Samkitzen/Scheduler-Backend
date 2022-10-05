@@ -7,6 +7,11 @@ const BranchSchema = new Schema({
         type: String,
         required: true
     },
+    branchCode : {
+        type:String,
+        required: true,
+        unique: true
+    }
 
 });
 

@@ -7,6 +7,11 @@ const TeacherSchema = new Schema({
         type: String,
         required: true
     },
+    teacherCode:{
+        type:String,
+        required:true,
+        unique:true
+    }
 });
 
 const Teacher = mongoose.model('teacher',TeacherSchema);

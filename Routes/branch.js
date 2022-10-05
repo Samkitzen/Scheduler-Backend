@@ -9,9 +9,9 @@ const Branch = require("../Models/Branch")
 //Branches
 router.post('/',async(req,res)=>{
     try {
-        const { name } = req.body;
+        const { name ,branchCode} = req.body;
         const branch = new Branch({
-            name
+            name,branchCode
         });
         const savedBranch = await branch.save();
         res.json(savedBranch);

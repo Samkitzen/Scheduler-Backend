@@ -8,9 +8,9 @@ const Teacher = require("../Models/Teacher")
 //Teachers
 router.post('/',async(req,res)=>{
     try {
-        const { name } = req.body;
+        const { name,teacherCode } = req.body;
         const teacher = new Teacher({
-            name
+            name,teacherCode
         });
         const savedTeacher = await teacher.save();
         res.json(savedTeacher);

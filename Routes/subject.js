@@ -11,11 +11,11 @@ const Subject = require("../Models/Subject")
 //Branches
 router.post('/', async (req, res) => {
     try {
-        const { name, branchId, teacherId,sem } = req.body;
-        const subject = new Subject({
-            name, branch: branchId, teacher: teacherId,sem
+        const { sem,branchCode,subject } = req.body;
+        const newSub = new Subject({
+            sem, branchCode,subject
         });
-        const savedSubject = await subject.save();
+        const savedSubject = await newSub.save();
         res.json(savedSubject);
     } catch (error) {
         return res.status(500).json({ error: error });
