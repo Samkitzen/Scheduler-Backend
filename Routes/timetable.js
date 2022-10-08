@@ -1,47 +1,72 @@
 const express = require('express')
 const router = express.Router()
 
-// const fetchuser = require("../middleware/fetchUser")
-// const { body, validationResult } = require('express-validator');  //for validation
-const Branch = require("../Models/Branch")
-const Teacher = require("../Models/Teacher")
-const Subject = require("../Models/Subject")
 const Calendar = require("../Models/Calendar")
 
 
-router.get("/",async(req,res)=>{
-    const { sem, branchId,session} = req.body;
-    try{
-        const timetable = await Calendar.find({sem,branchId,session});
-        res.json(timetable)
+router.get("/:sem/:branchCode", async (req, res) => {
+    const { sem, branchCode } = req.params
+    try {
+        const data = await Calendar.find({ sem, branchCode });
+        res.json(data[0].timetable)
     }
-    catch(err){
+    catch (err) {
         res.json(err)
     }
-    
-})
 
-router.post("/",async(req,res)=>{
-    const {sem,session,branchId,timetable} = req.body
-    try{
-        const data = await Calendar.find({sem,session,branchId})
-        console.log(data);
-        if(data.length === 0){
-            const entry = new Calendar({
-                sem,session,branchId,timetable
-            })
-            const d = await entry.save()
-            console.log(d);
-            res.status(200).json("success")
-        }else{
-            await Calendar.updateOne({sem,session,branchId},{timetable : timetable})
+})
+router.put("/", async (req, res) => {
+    const { sem, branchCode, day, time, subjectCode } = req.body
+
+    try {
+        // const query = { [`${day}.${time}`]: { subjectCode:subjectCode, bit:0 } };
+        // await Calendar.updateOne({sem,branchCode}, query)
+        // res.status(200).json("success");
+        const data = await Calendar.find({ sem, branchCode, day, time, subjectCode })
+        if (data.length === 0) {
+            throw "!Not Found"
+        } else {
+            var tt = data[0].timetable
+            tt[day.toString()][time.toString()].subjectCode = subjectCode;
+            await Calendar.updateOne({ sem, branchCode }, { timetable: tt })
             res.status(200).json("success");
         }
     }
-    catch(err){
-res.status(500).json(err)
+    catch (err) {
+        console.log((err));
+        res.status(500).json(err)
     }
-    
+
+})
+
+router.post("/", async (req, res) => {
+    const { sem, branchCode, day, time, subjectCode } = req.body
+    console.log(req.body);
+    try {
+        const data = await Calendar.find({ sem, branchCode, day, time, subjectCode })
+        if (data.length === 0) {
+            const timetable = {
+                [day]: {
+                    [time]: { subjectCode: subjectCode }
+                }
+            }
+            const entry = new Calendar({
+                sem, branchCode, timetable
+            })
+            const d = await entry.save()
+            res.status(200).json(d)
+        } else {
+            var tt = data[0].timetable
+            tt[day.toString()][time.toString()].subjectCode = subjectCode;
+            await Calendar.updateOne({ sem, branchCode }, { timetable: tt })
+            res.status(200).json("success");
+        }
+    }
+    catch (err) {
+        console.log((err));
+        res.status(500).json(err)
+    }
+
 })
 
 module.exports = router;  

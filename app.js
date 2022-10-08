@@ -14,11 +14,8 @@ db_connect()
 app.use("/api/branch",require("./Routes/branch"))
 app.use("/api/teacher",require("./Routes/teacher"))
 app.use("/api/subject",require("./Routes/subject"))
-app.use("/api/auth/signup",require("./Routes/signup"))
 app.use("/api/timetable",require("./Routes/timetable"))
-
-
-
+// app.use("/api/auth/signup",require("./Routes/signup"))
 
 
 

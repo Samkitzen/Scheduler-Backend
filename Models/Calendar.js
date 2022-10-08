@@ -3,21 +3,18 @@ const mongoose = require("mongoose")
 const { Schema } = mongoose;
 
 
-const cellSchema = new Schema({
-    time: {
-        type: Number,
-        required: true
-    },
-    subjectCode:{
-        type:String,
-        required:true,
-    }
-})
+const rowSchema = {
+    "8": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+    "9": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+    "10": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+    "11": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+    "12": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+    "1": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+    "2": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+    "3": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+    "4": { subjectCode:{ type: String ,default : ""}, bit: {type :Number,default : 0} },
+}
 const CalenderSchema = new Schema({
-    session: {
-        type: Number,
-        required: true
-    },
     sem: {
         type: Number,
         required: true
@@ -27,18 +24,13 @@ const CalenderSchema = new Schema({
         required: true
     },
     timetable: {
-        Monday: [cellSchema],
-        Tuesday: [cellSchema],
-        Wednesday: [cellSchema],
-        Thursday: [cellSchema],
-        Friday: [cellSchema],
-        Saturday: [cellSchema],
-    },
-    date: {
-        type: Date,
-        default: Date.now
-    },
-
+        "1" :rowSchema,
+        "2": rowSchema,
+        "3": rowSchema,
+        "4": rowSchema,
+        "5": rowSchema,
+        "6": rowSchema,
+    }
 });
 
 const Calendar = mongoose.model('calendar', CalenderSchema);
