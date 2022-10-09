@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
-
+const authRole = require("../middleware/authRole")
+const ROLE = require('../Models/Role')
+const fetchuser = require("../middleware/fetchUser")
 const Calendar = require("../Models/Calendar")
 
 
@@ -13,9 +15,9 @@ router.get("/:sem/:branchCode", async (req, res) => {
     catch (err) {
         res.json(err)
     }
-
 })
-router.put("/", async (req, res) => {
+
+router.put("/",fetchuser,authRole(ROLE.ADMIN), async (req, res) => {
     const { sem, branchCode, day, time, subjectCode } = req.body
 
     try {
@@ -39,7 +41,7 @@ router.put("/", async (req, res) => {
 
 })
 
-router.post("/", async (req, res) => {
+router.post("/",fetchuser,authRole(ROLE.ADMIN), async (req, res) => {
     const { sem, branchCode, day, time, subjectCode } = req.body
     console.log(req.body);
     try {

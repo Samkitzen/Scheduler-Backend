@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
-
+const authRole = require("../middleware/authRole")
+const ROLE = require('../Models/Role')
+const fetchuser = require("../middleware/fetchUser")
 const Subject = require("../Models/Subject")
 
 
-//Branches
-router.post('/', async (req, res) => {
+//Subjects
+router.post('/',fetchuser,authRole(ROLE.ADMIN), async (req, res) => {
     try {
         const { sem,branchCode,subject } = req.body;
         const newSub = new Subject({
@@ -21,7 +23,6 @@ router.post('/', async (req, res) => {
 router.get('/:sem/:branchcode', async (req, res) => {
     try {
         var allSubjects = await Subject.find({branchCode : req.params.branchcode,sem: req.params.sem});
-        console.log(allSubjects);
         res.json(allSubjects[0].subject);
     } catch (error) {
         return res.status(500).json({ error: error });

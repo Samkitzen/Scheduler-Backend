@@ -11,11 +11,11 @@ app.use(cors())
 db_connect()
 
 //ALL ROUTES
+app.use("/api/auth",require("./Routes/auth"))
 app.use("/api/branch",require("./Routes/branch"))
 app.use("/api/teacher",require("./Routes/teacher"))
 app.use("/api/subject",require("./Routes/subject"))
 app.use("/api/timetable",require("./Routes/timetable"))
-// app.use("/api/auth/signup",require("./Routes/signup"))
 
 
 

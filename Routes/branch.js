@@ -1,13 +1,15 @@
 const express = require('express')
 const router = express.Router()
+const authRole = require("../middleware/authRole")
+const ROLE = require('../Models/Role')
+const fetchuser = require("../middleware/fetchUser")
 
-// const fetchuser = require("../middleware/fetchUser")
 // const { body, validationResult } = require('express-validator');  //for validation
 const Branch = require("../Models/Branch")
 
 
 //Branches
-router.post('/',async(req,res)=>{
+router.post('/',fetchuser,authRole(ROLE.ADMIN),async(req,res)=>{
     try {
         const { name ,branchCode} = req.body;
         const branch = new Branch({
