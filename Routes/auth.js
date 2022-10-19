@@ -126,13 +126,13 @@ router.get("/getusers",fetchuser,authRole(ROLE.ADMIN),async(req,res)=>{
 
 //Route 3: get loggedin user Details using  /api/auth/getuser : Login required
 
-// router.get("/getuser",fetchuser, async (req, res) => {
-//     try {
-//         const userid = req.user.id;
-//         const user = await User.findOne({userid}).select("-password");
-//         res.json(user);
-//     } catch (error) {
-//         return res.status(500).send("internal server error!");
-//     }
-// })
+router.get("/getuser",fetchuser, async (req, res) => {
+    try {
+        const userid = req.user.id;
+        const user = await User.findOne({userid}).select("-password");
+        res.json(user);
+    } catch (error) {
+        return res.status(500).send("internal server error!");
+    }
+})
 module.exports = router;

@@ -9,8 +9,8 @@ const Calendar = require("../Models/Calendar")
 router.get("/:sem/:branchCode", async (req, res) => {
     const { sem, branchCode } = req.params
     try {
-        const data = await Calendar.find({ sem, branchCode });
-        res.json(data[0].timetable)
+        const data = await Calendar.findOne({ sem, branchCode });
+        res.json(data.timetable)
     }
     catch (err) {
         res.json(err)
