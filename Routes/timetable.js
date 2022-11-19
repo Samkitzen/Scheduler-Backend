@@ -17,19 +17,16 @@ router.get("/:sem/:branchCode", async (req, res) => {
     }
 })
 
+//only admin can change these all routes
 router.put("/",fetchuser,authRole(ROLE.ADMIN), async (req, res) => {
     const { sem, branchCode, day, time, subjectCode } = req.body
-
     try {
-        // const query = { [`${day}.${time}`]: { subjectCode:subjectCode, bit:0 } };
-        // await Calendar.updateOne({sem,branchCode}, query)
-        // res.status(200).json("success");
-        const data = await Calendar.find({ sem, branchCode, day, time, subjectCode })
-        if (data.length === 0) {
+        const data = await Calendar.findOne({ sem, branchCode })
+        if (data === null) {
             throw "!Not Found"
         } else {
-            var tt = data[0].timetable
-            tt[day.toString()][time.toString()].subjectCode = subjectCode;
+            var tt = data.timetable
+            tt[day][time].subjectCode = subjectCode;
             await Calendar.updateOne({ sem, branchCode }, { timetable: tt })
             res.status(200).json("success");
         }
@@ -38,7 +35,6 @@ router.put("/",fetchuser,authRole(ROLE.ADMIN), async (req, res) => {
         console.log((err));
         res.status(500).json(err)
     }
-
 })
 
 router.post("/",fetchuser,authRole(ROLE.ADMIN), async (req, res) => {

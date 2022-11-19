@@ -1,6 +1,6 @@
 module.exports = {
     ADMIN : "admin",
     FACULTY : "faculty",
-    CR : "cr",
+    CR : "CR",
     BASIC : "basic"
 }

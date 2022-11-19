@@ -101,11 +101,12 @@ router.post("/login", [
 //Assign Roles for other user  : Login requird with admin role
 router.put("/assignrole",fetchuser,authRole(ROLE.ADMIN),async(req,res)=>{
     var success = "false"
-    const {userID,role} = req.body
+    const {userId,role} = req.body
+    console.log(req.body)
     try{
-    await User.findByIdAndUpdate(userID,{role : role})
+    await User.findByIdAndUpdate(userId,{role : role})
     success = true
-    res.status(200).json({success,"msg" : `${role} Role assigned to ${userID}`})
+    res.status(200).json({success,"msg" : `${role} Role assigned to ${userId}`})
     }
     catch(err){
         res.status(500).send(err)
@@ -113,7 +114,9 @@ router.put("/assignrole",fetchuser,authRole(ROLE.ADMIN),async(req,res)=>{
 })
 
 //Fetch all Users : Login requird with admin role
-router.get("/getusers",fetchuser,authRole(ROLE.ADMIN),async(req,res)=>{
+
+// add fetchuser,authRole(ROLE.ADMIN) to enable logged in 
+router.get("/getusers",async(req,res)=>{
     try{
         const allusers = await User.find().select("-password")
         success = true
@@ -129,7 +132,7 @@ router.get("/getusers",fetchuser,authRole(ROLE.ADMIN),async(req,res)=>{
 router.get("/getuser",fetchuser, async (req, res) => {
     try {
         const userid = req.user.id;
-        const user = await User.findOne({userid}).select("-password");
+        const user = await User.findById(userid).select("-password");
         res.json(user);
     } catch (error) {
         return res.status(500).send("internal server error!");

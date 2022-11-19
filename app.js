@@ -2,11 +2,15 @@ const express = require('express')
 const app = express()
 const cors = require('cors');
 const db_connect = require('./database/db_connect')
+const schedule = require('node-schedule')
+const LiveWeek = require("./Models/LiveWeek");
+const Calendar = require('./Models/Calendar');
 
 require('dotenv').config()
 
 app.use(express.json());
 app.use(cors())
+
 //Connection with DB
 db_connect()
 
@@ -16,8 +20,18 @@ app.use("/api/branch",require("./Routes/branch"))
 app.use("/api/teacher",require("./Routes/teacher"))
 app.use("/api/subject",require("./Routes/subject"))
 app.use("/api/timetable",require("./Routes/timetable"))
+app.use("/api/status",require("./Routes/status"))
+app.use("/api/liveweek",require("./Routes/liveweek"))
 
 
+//Sunday Job Scheduling
+
+// const job = schedule.scheduleJob('* * * * * 0',async function(){
+//     await LiveWeek.deleteMany({})
+//     const allCalendarData = await Calendar.find({})
+//     await LiveWeek.insertMany(allCalendarData)
+//     console.log("called");
+//   });
 
 
 //SERVER CONFIG

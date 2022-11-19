@@ -3,12 +3,12 @@ const router = express.Router()
 const authRole = require("../middleware/authRole")
 const ROLE = require('../Models/Role')
 const fetchuser = require("../middleware/fetchUser")
-
-// const { body, validationResult } = require('express-validator');  //for validation
 const Branch = require("../Models/Branch")
 
 
 //Branches
+
+//Add new Branch : Login with admin required
 router.post('/',fetchuser,authRole(ROLE.ADMIN),async(req,res)=>{
     try {
         const { name ,branchCode} = req.body;
@@ -22,6 +22,7 @@ router.post('/',fetchuser,authRole(ROLE.ADMIN),async(req,res)=>{
     }
 })
 
+//No Login Required-=> Fetching all branches
 router.get('/',async(req,res)=>{
     try {
         const allBranches = await Branch.find({});
